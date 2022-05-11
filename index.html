@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>othello</title>
+  </head>
+  <style>
+    .table {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -257px;
+      margin-left: -257px;
+    }
+
+    .table td {
+      width: 70px;
+      height: 70px;
+      background-color: green;
+      text-align: center;
+      font-size: 3.5vw;
+      cursor: pointer;
+    }
+    .list {
+      max-width: 750px;
+      margin: 0 auto;
+      list-style: none;
+      background-color: #fff;
+      padding: 0;
+    }
+
+    .list-item {
+      display: flex;
+      display: -webkit-flex;
+      -webkit-justify-content: flex-start;
+      justify-content: flex-start;
+      border-bottom: 2px solid #ddd;
+    }
+    .list-item > * {
+      width: 50px;
+      padding: 5px 10px;
+      text-align: center;
+    }
+    .list-item *:last-child {
+      -webkit-flex-grow: 1;
+      flex-grow: 1;
+    }
+  </style>
+  <body>
+    <div id="orderBlack">黒の番です</div>
+    <div id="orderWhite">白の番です</div>
+    <table class="table">
+      <!-- 1 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 2 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 3 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 4 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>◯</td>
+        <td>●</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 5 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>●</td>
+        <td>◯</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 6 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 7 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- 8 -->
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <script>
+      window.onload = function () {
+        const boardSize = 8;
+        let board = [];
+        const black = 1;
+        const white = -1;
+        let order = true; //trueは黒（先行）
+        const othelloWhite = "◯";
+        const othelloBlack = "●";
+
+        for (let i = 0; i < boardSize; i++) {
+          let tmpArray = [];
+          for (let j = 0; j < boardSize; j++) {
+            tmpArray[j] = 0;
+          }
+          board[i] = tmpArray;
+        }
+
+        board[3][3] = white;
+        board[3][4] = black;
+        board[4][3] = black;
+        board[4][4] = white;
+
+        document.getElementById("orderWhite").style.visibility = "hidden";
+        let tableElements = document.getElementsByTagName("td");
+        console.log(`tableElements.length: ${tableElements.length}`);
+        //tableの全てにclickイベントを付与する
+        for (let $i = 0; $i < tableElements.length; $i++) {
+          tableElements[$i].addEventListener("click", function () {
+            //配列に変換する
+            let tableElement = [].slice.call(tableElements);
+
+            //クリックした位置の取得
+            let index = tableElement.indexOf(this);
+            console.log(`マス番号: ${index}`);
+
+            //位置の座標入れる
+            const col = Math.floor(index / 8);
+            const row = index - col * 8;
+            console.log(`行: ${col}`, `列: ${row}`);
+
+            //石を置く場所の制御
+            if (board[col][row] !== 0) {
+              alert("そこには置けません");
+              return;
+            }
+
+            putOthello(index, col, row);
+            console.log(board);
+          });
+        }
+
+        function putOthello(index, col, row) {
+          if (order) {
+            //黒の番
+            document.getElementById("orderWhite").style.visibility = "visible";
+            document.getElementById("orderBlack").style.visibility = "hidden";
+            board[col][row] = black;
+            for (let i = 0; i < tableElements.length; i++) {
+              if ((tableElements[i] = black)) {
+                tableElements[index].innerHTML = othelloBlack;
+              } else if ((tableElements[i] = white)) {
+                tableElements[index].innerHTML = othelloWhite;
+              }
+            }
+          } else {
+            //白の番
+            document.getElementById("orderBlack").style.visibility = "visible";
+            document.getElementById("orderWhite").style.visibility = "hidden";
+            board[col][row] = white;
+            for (let i = 0; i < tableElements.length; i++) {
+              if ((tableElements[i] = white)) {
+                tableElements[index].innerHTML = othelloWhite;
+              } else if ((tableElements[i] = black)) {
+                tableElements[index].innerHTML = othelloBlack;
+              }
+            }
+          }
+          order = !order;
+        }
+      };
+    </script>
+  </body>
+</html>
