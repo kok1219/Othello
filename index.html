@@ -200,9 +200,9 @@
             document.getElementById("orderBlack").style.visibility = "hidden";
             board[col][row] = black;
             for (let i = 0; i < tableElements.length; i++) {
-              if ((tableElements[i] = black)) {
+              if ((tableElements[index] = black)) {
                 tableElements[index].innerHTML = othelloBlack;
-              } else if ((tableElements[i] = white)) {
+              } else if ((tableElements[index] = white)) {
                 tableElements[index].innerHTML = othelloWhite;
               }
             }
@@ -212,9 +212,9 @@
             document.getElementById("orderWhite").style.visibility = "hidden";
             board[col][row] = white;
             for (let i = 0; i < tableElements.length; i++) {
-              if ((tableElements[i] = white)) {
+              if ((tableElements[index] = white)) {
                 tableElements[index].innerHTML = othelloWhite;
-              } else if ((tableElements[i] = black)) {
+              } else if ((tableElements[index] = black)) {
                 tableElements[index].innerHTML = othelloBlack;
               }
             }
