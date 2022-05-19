@@ -147,6 +147,8 @@
         let board = [];
         const black = 1;
         const white = -1;
+        const enpty = 0;
+
         let order = true; //trueは黒（先行）
         const othelloWhite = "◯";
         const othelloBlack = "●";
@@ -187,7 +189,6 @@
               alert("そこには置けません");
               return;
             }
-
             putOthello(index, col, row);
             console.log(board);
           });
@@ -199,26 +200,33 @@
             document.getElementById("orderWhite").style.visibility = "visible";
             document.getElementById("orderBlack").style.visibility = "hidden";
             board[col][row] = black;
-            for (let i = 0; i < tableElements.length; i++) {
-              if ((tableElements[index] = black)) {
-                tableElements[index].innerHTML = othelloBlack;
-              } else if ((tableElements[index] = white)) {
-                tableElements[index].innerHTML = othelloWhite;
-              }
-            }
+            tableElements[index].innerHTML = othelloBlack;
           } else {
             //白の番
             document.getElementById("orderBlack").style.visibility = "visible";
             document.getElementById("orderWhite").style.visibility = "hidden";
             board[col][row] = white;
-            for (let i = 0; i < tableElements.length; i++) {
-              if ((tableElements[index] = white)) {
-                tableElements[index].innerHTML = othelloWhite;
-              } else if ((tableElements[index] = black)) {
-                tableElements[index].innerHTML = othelloBlack;
+            tableElements[index].innerHTML = othelloWhite;
+          }
+
+          //64個の多次元配列のデータを取得
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+              console.log("[" + i + "][" + j + "] = " + board[i][j]);
+              //多次元配列に入っている数字が1の場合は黒、-1の場合は白の石を置く
+              let stone = "";
+              switch (board[i][j]) {
+                case 1:
+                  stone = othelloBlack;
+                  break;
+                case -1:
+                  stone = othelloWhite;
+                  break;
               }
+              console.log(stone);
             }
           }
+
           order = !order;
         }
       };
